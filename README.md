@@ -78,13 +78,13 @@ Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your
 
 4. Type [First Name]-[Last Name]-workshop into the **Notebook instance name** text box, and select ml.m4.xlarge for the **Notebook instance type**.
 
+5. For IAM role, choose **Select an existing role** and choose one named "AmazonSageMaker-ExecutionRole-XXXX".
+
 ![Create Notebook Instance](/images/create-instance.png)
 
-5. For IAM role, choose **Create a new role**, and in the resulting pop-up modal, select **Specific S3 buckets** under **S3 Buckets you specify – optional**. In the text field, paste the name of the S3 bucket you created above.  It should look similar to ```smworkshop-john-smith```. Click **Create role**.
+6. You can expand the "Tags" section and add tags here if required.
 
-![Create IAM role](/images/create-iam-role.png)
-
-6. You will be taken back to the Create Notebook instance page.  Click **Create notebook instance**.
+7. You will be taken back to the Create Notebook instance page.  Click **Create notebook instance**.  This will take several minutes to complete.
 
 ### 3. Accessing the Notebook Instance
 
