@@ -7,6 +7,7 @@
 This is a CloudFormation template for the IAM role that needs to be used by the students when creating their Sagemaker notebook.  It will output an ARN that will be used during the workshop.
 
 Sagemaker Service Role (Cloudformation Template)
+
 ```{
 	"Resources": {
 		"SageMakerLab": {
@@ -52,7 +53,8 @@ Sagemaker Service Role (Cloudformation Template)
 			}
 		}
 	}
-}```
+}
+```
 
 ### Sagemaker User Policy:
 These are the IAM permissions that should be setup for every user.
@@ -98,7 +100,8 @@ These are the IAM permissions that should be setup for every user.
             }
         }
     ]
-}```
+}
+```
 
 ## Resources Created
 Below are the resources required in the AWS account that will be created.  All are per student unless noted otherwise
