@@ -107,6 +107,7 @@ These are the IAM permissions that should be setup for every user.
 Below are the resources required in the AWS account that will be created.  All are per student unless noted otherwise
 
 - 1 S3 Bucket
+- 1 Sagemaker Role (can be shared by all students)
 - Sagemaker
 	- General
 		- 1 Sagemaker Notebook instance (ml.m4.xlarge)

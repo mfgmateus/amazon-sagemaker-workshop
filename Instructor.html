@@ -1,0 +1,136 @@
+<h1>
+<a id="user-content-deep-learning-with-sagemaker-and-tensorflow" class="anchor" href="#deep-learning-with-sagemaker-and-tensorflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deep Learning with Sagemaker and Tensorflow</h1>
+<h2>
+<a id="user-content-required-iam-roles-and-permissions" class="anchor" href="#required-iam-roles-and-permissions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Required IAM Roles and Permissions</h2>
+<h3>
+<a id="user-content-sagemaker-role" class="anchor" href="#sagemaker-role" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sagemaker Role</h3>
+<p>This is a CloudFormation template for the IAM role that needs to be used by the students when creating their Sagemaker notebook.  It will output an ARN that will be used during the workshop.</p>
+<p>Sagemaker Service Role (Cloudformation Template)</p>
+<pre lang="{"><code>	"Resources": {
+		"SageMakerLab": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [{
+						"Effect": "Allow",
+						"Principal": {
+							"Service": [
+								"sagemaker.amazonaws.com"
+							]
+						},
+						"Action": [
+							"sts:AssumeRole"
+						]
+					}]
+				},
+				"ManagedPolicyArns": [
+					"arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+				]
+			}
+		}
+	},
+	"Outputs": {
+		"qwikLAB": {
+			"Description": "Outputs to be used by qwikLAB",
+			"Value": {
+				"Fn::Join": [
+					"", [
+						"{",
+						"\"Resource-ARN\": \"",
+						{
+							"Fn::GetAtt": [
+								"SageMakerLab",
+								"Arn"
+							]
+						},
+						"\"}"
+					]
+				]
+			}
+		}
+	}
+}
+</code></pre>
+<h3>
+<a id="user-content-sagemaker-user-policy" class="anchor" href="#sagemaker-user-policy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sagemaker User Policy:</h3>
+<p>These are the IAM permissions that should be setup for every user.</p>
+<pre lang="{"><code>    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:*",
+                "ecr:GetAuthorizationToken",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:GetLogEvents",
+                "s3:CreateBucket",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:ListAllMyBuckets",
+                "iam:ListRoles"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+            }
+        }
+    ]
+}
+</code></pre>
+<h2>
+<a id="user-content-resources-created" class="anchor" href="#resources-created" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resources Created</h2>
+<p>Below are the resources required in the AWS account that will be created.  All are per student unless noted otherwise</p>
+<ul>
+<li>1 S3 Bucket</li>
+<li>1 Sagemaker Role (can be shared by all students)</li>
+<li>Sagemaker
+<ul>
+<li>General
+<ul>
+<li>1 Sagemaker Notebook instance (ml.m4.xlarge)</li>
+</ul>
+</li>
+<li>Module 2 (Gaming)
+<ul>
+<li>1 Training instance (ml.c4.xlarge)</li>
+<li>1 Endpoint (ml.t2.medium)</li>
+</ul>
+</li>
+<li>Module 3 (Distributed TensorFlow)
+<ul>
+<li>1 Training instance (2x ml.c4.8xlarge)</li>
+<li>1 Endpoint (ml.m4.xlarge)</li>
+</ul>
+</li>
+<li>Module 4 (Image Classification)
+<ul>
+<li>1 S3 Bucket</li>
+<li>1 Training instance (ml.p2.8xlarge)</li>
+<li>1 Training instance (2x ml.c4.8xlarge)</li>
+<li>1 Endpoint (ml.m4.xlarge)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+

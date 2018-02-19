@@ -104,6 +104,7 @@ In this module, we'll work our way through an example Jupyter notebook that demo
 To begin, follow these steps:
 
 1. Download this repository to your computer by clicking the green **Clone or download**  button from the upper right of this page, then **Download ZIP**.
+	- If you aren't accessing this on Github, you can download this here: [sagemaker-lab.zip](./sagemaker-lab.zip)
 2. In your notebook instance, click the **New** button on the right and select **Folder**.  
 3. Click the checkbox next to your new folder, click the **Rename** button above in the menu bar, and give the folder a name such as 'video-game-sales'.
 4. Click the folder to enter it.

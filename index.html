@@ -1,0 +1,177 @@
+<h1>
+<a id="user-content-amazon-sagemaker-workshop" class="anchor" href="#amazon-sagemaker-workshop" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Amazon SageMaker Workshop</h1>
+<p>Amazon SageMaker is a fully-managed service that enables developers and data scientists to quickly and easily build, train, and deploy machine learning models at any scale. In this workshop, you'll create a SageMaker notebook instance and work through sample Jupyter notebooks that demonstrate some of the many features of SageMaker.  For example, you'll create model training jobs using SageMaker's hosted training feature, and create endpoints to serve predictions from your models using SageMaker's hosted endpoint feature. Along the way you'll see how machine learning can be applied to both structured data (e.g. from CSV flat files) and unstructured data (e.g. images).</p>
+<p><a href="/images/overview.png" target="_blank"><img src="/images/overview.png" alt="Overview" style="max-width:100%;"></a></p>
+<h2>
+<a id="user-content-prerequisites" class="anchor" href="#prerequisites" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisites</h2>
+<h3>
+<a id="user-content-aws-account" class="anchor" href="#aws-account" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AWS Account</h3>
+<p>In order to complete this workshop you'll need an AWS Account with access to create AWS IAM, S3 and SageMaker resources. The code and instructions in this workshop assume only one student is using a given AWS account at a time. If you try sharing an account with another student, you'll run into naming conflicts for certain resources. You can work around these by appending a unique suffix to the resources that fail to create due to conflicts, but the instructions do not provide details on the changes required to make this work.</p>
+<p>Some of the resources you will launch as part of this workshop are eligible for the AWS free tier if your account is less than 12 months old. See the <a href="https://aws.amazon.com/free/" rel="nofollow">AWS Free Tier page</a> for more details.</p>
+<h3>
+<a id="user-content-aws-region" class="anchor" href="#aws-region" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AWS Region</h3>
+<p>SageMaker is not available in all AWS Regions at this time.  Accordingly, we recommend running this workshop in one of the following supported AWS Regions:  N. Virginia, Oregon, Ohio, or Ireland.</p>
+<p>Once you've chosen a region, you should create all of the resources for this workshop there, including a new Amazon S3 bucket and a new SageMaker notebook instance. Make sure you select your region from the dropdown in the upper right corner of the AWS Console before getting started.</p>
+<p><a href="/images/region-selection.png" target="_blank"><img src="/images/region-selection.png" alt="Region selection screenshot" style="max-width:100%;"></a></p>
+<h3>
+<a id="user-content-browser" class="anchor" href="#browser" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Browser</h3>
+<p>We recommend you use the latest version of Chrome or Firefox to complete this workshop.</p>
+<h2>
+<a id="user-content-modules" class="anchor" href="#modules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Modules</h2>
+<p>This workshop is divided into multiple modules. Module 1 must be completed first, followed by Module 2.  You can complete the other modules (Modules 3 and 4) in any order.</p>
+<ol>
+<li>Creating a Notebook Instance</li>
+<li>Video Game Sales Notebook</li>
+<li>Distributed Training with TensorFlow Notebook</li>
+<li>Image Classification Notebook</li>
+</ol>
+<p>Be patient as you work your way through the notebook-based modules. After you run a cell in a notebook, it may take several seconds for the code to show results. For the cells that start training jobs, it may take several minutes. In particular, the last two modules have training jobs that may last up to 10 minutes.</p>
+<p>After you have completed the workshop, you can delete all of the resources that were created by following the Cleanup Guide provided with this lab guide.</p>
+<h2>
+<a id="user-content-module-1--creating-a-notebook-instance" class="anchor" href="#module-1--creating-a-notebook-instance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Module 1:  Creating a Notebook Instance</h2>
+<p>In this module we'll start by creating an Amazon S3 bucket that will be used throughout the workshop.  We'll then create a SageMaker notebook instance, which we will use to run the other workshop modules.</p>
+<h3>
+<a id="user-content-1-create-a-s3-bucket" class="anchor" href="#1-create-a-s3-bucket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Create a S3 Bucket</h3>
+<p>SageMaker typically uses S3 as storage for data and model artifacts.  In this step you'll create a S3 bucket for this purpose. To begin, sign into the AWS Management Console, <a href="https://console.aws.amazon.com/" rel="nofollow">https://console.aws.amazon.com/</a>.</p>
+<h4>
+<a id="user-content-high-level-instructions" class="anchor" href="#high-level-instructions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>High-Level Instructions</h4>
+<p>Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your bucket's name must be globally unique across all regions and customers. We recommend using a name like <code>smworkshop-firstname-lastname</code>. If you get an error that your bucket name already exists, try adding additional numbers or characters until you find an unused name.</p>
+<details>
+<summary><strong>Step-by-step instructions (expand for details)</strong></summary><p>
+</p>
+<ol>
+<li>
+<p>In the AWS Management Console, choose <strong>Services</strong> then select <strong>S3</strong> under Storage.</p>
+</li>
+<li>
+<p>Choose <strong>+Create Bucket</strong></p>
+</li>
+<li>
+<p>Provide a globally unique name for your bucket such as <code>smworkshop-firstname-lastname</code>.</p>
+</li>
+<li>
+<p>Select the Region you've chosen to use for this workshop from the dropdown.</p>
+</li>
+<li>
+<p>Choose <strong>Create</strong> in the lower left of the dialog without selecting a bucket to copy settings from.</p>
+</li>
+</ol>
+</details>
+<h3>
+<a id="user-content-2-launching-the-notebook-instance" class="anchor" href="#2-launching-the-notebook-instance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Launching the Notebook Instance</h3>
+<ol>
+<li>
+<p>In the upper-right corner of the AWS Management Console, confirm you are in the desired AWS region. Select N. Virginia, Oregon, Ohio, or Ireland.</p>
+</li>
+<li>
+<p>Click on Amazon SageMaker from the list of all services.  This will bring you to the Amazon SageMaker console homepage.</p>
+</li>
+</ol>
+<p><a href="/images/Picture1.png" target="_blank"><img src="/images/Picture1.png" alt="Services in Console" style="max-width:100%;"></a></p>
+<ol start="3">
+<li>To create a new notebook instance, go to <strong>Notebook instances</strong>, and click the <strong>Create notebook instance</strong> button at the top of the browser window.</li>
+</ol>
+<p><a href="/images/Picture2.png" target="_blank"><img src="/images/Picture2.png" alt="Notebook Instances" style="max-width:100%;"></a></p>
+<ol start="4">
+<li>
+<p>Type [First Name]-[Last Name]-workshop into the <strong>Notebook instance name</strong> text box, and select ml.m4.xlarge for the <strong>Notebook instance type</strong>.</p>
+</li>
+<li>
+<p>For IAM role, choose <strong>Select an existing role</strong> and choose one named "AmazonSageMaker-ExecutionRole-XXXX".</p>
+</li>
+</ol>
+<p><a href="/images/create-instance.png" target="_blank"><img src="/images/create-instance.png" alt="Create Notebook Instance" style="max-width:100%;"></a></p>
+<ol start="6">
+<li>
+<p>You can expand the "Tags" section and add tags here if required.</p>
+</li>
+<li>
+<p>You will be taken back to the Create Notebook instance page.  Click <strong>Create notebook instance</strong>.  This will take several minutes to complete.</p>
+</li>
+</ol>
+<h3>
+<a id="user-content-3-accessing-the-notebook-instance" class="anchor" href="#3-accessing-the-notebook-instance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Accessing the Notebook Instance</h3>
+<ol>
+<li>Wait for the server status to change to <strong>InService</strong>. This will take a few minutes.</li>
+</ol>
+<p><a href="/images/Picture4.png" target="_blank"><img src="/images/Picture4.png" alt="Access Notebook" style="max-width:100%;"></a></p>
+<ol start="2">
+<li>Click <strong>Open</strong>. You will now see the Jupyter homepage for your notebook instance.</li>
+</ol>
+<p><a href="/images/Picture5.png" target="_blank"><img src="/images/Picture5.png" alt="Open Notebook" style="max-width:100%;"></a></p>
+<h2>
+<a id="user-content-module-2--video-game-sales-notebook" class="anchor" href="#module-2--video-game-sales-notebook" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Module 2:  Video Game Sales Notebook</h2>
+<p>In this module, we'll work our way through an example Jupyter notebook that demonstrates how to use an Amazon-provided algorithm in SageMaker. More specifically, we'll use SageMaker's version of XGBoost, a popular and efficient open-source implementation of the gradient boosted trees algorithm. Gradient boosting is a supervised learning algorithm that attempts to predict a target variable by combining the estimates of a set of simpler, weaker models. XGBoost has done remarkably well in machine learning competitions because it robustly handles a wide variety of data types, relationships, and distributions. It often is a useful, go-to algorithm in working with structured data, such as data that might be found in relational databases and flat files.</p>
+<p>To begin, follow these steps:</p>
+<ol>
+<li>Download this repository to your computer by clicking the green <strong>Clone or download</strong>  button from the upper right of this page, then <strong>Download ZIP</strong>.
+<ul>
+<li>If you aren't accessing this on Github, you can download this here: <a href="./sagemaker-lab.zip">sagemaker-lab.zip</a>
+</li>
+</ul>
+</li>
+<li>In your notebook instance, click the <strong>New</strong> button on the right and select <strong>Folder</strong>.</li>
+<li>Click the checkbox next to your new folder, click the <strong>Rename</strong> button above in the menu bar, and give the folder a name such as 'video-game-sales'.</li>
+<li>Click the folder to enter it.</li>
+<li>To upload the notebook, click the <strong>Upload</strong> button on the right, then in the file selection popup, select the file 'video-game-sales.ipynb' from the folder on your computer where you downloaded this GitHub repository. Then click the blue <strong>Upload</strong> button that appears in the notebook next to the file name.</li>
+<li>You are now ready to begin the notebook:  click the notebook's file name to open it.</li>
+<li>In the <code>bucket = '&lt;your_s3_bucket_name_here&gt;'</code> code line, paste the name of the S3 bucket you created in Module 1 to replace <code>&lt;your_s3_bucket_name_here&gt;</code>.  The code line should now read similar to <code>bucket = 'smworkshop-john-smith'</code>.  Do NOT paste the entire path (s3://.......), just the bucket name.</li>
+<li>If you are familiar with Jupyter notebooks, you can skip this step.  Otherwise, please expand the instructions below.</li>
+</ol>
+<details>
+<summary><strong>Jupyter notebook instructions (expand for details)</strong></summary><p>
+</p>
+<ol>
+<li>
+<p>Jupyter notebooks tell a story by combining explanatory text and code. There are two types of "cells" in a notebook:  code cells, and "markdown" cells with explanatory text.</p>
+</li>
+<li>
+<p>You will be running the code cells.  These are distinguished by having "In" next to them in the left margin next to the cell, and a greyish background.  Markdown cells lack "In" and have a white background.</p>
+</li>
+<li>
+<p>To run a code cell, simply click in it, then either click the <strong>Run Cell</strong> button in the notebook's toolbar, or use Control+Enter from your computer's keyboard.</p>
+</li>
+<li>
+<p>It may take a few seconds to a few minutes for a code cell to run.  Please run each code cell in order, and only once, to avoid repeated operations.  For example, running the same training job cell twice might create two training jobs, possibly exceeding your service limits.</p>
+</li>
+</ol>
+</details>
+<p><strong>NOTE:  training the model for this example typically takes about 5 minutes.</strong></p>
+<h2>
+<a id="user-content-module-3--distributed-training-with-tensorflow-notebook" class="anchor" href="#module-3--distributed-training-with-tensorflow-notebook" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Module 3:  Distributed Training with TensorFlow Notebook</h2>
+<p>In this module we will be using images of handwritten digits from the <a href="http://yann.lecun.com/exdb/mnist/" rel="nofollow">MNIST Database</a> to demonstrate how to perform distributed training using SageMaker. Using a convolutional neural network model based on the <a href="https://github.com/tensorflow/models/tree/master/official/mnist">TensorFlow MNIST Example</a>, we will demonstrate how to use a Jupyter notebook and the <a href="https://github.com/aws/sagemaker-python-sdk">SageMaker Python SDK</a> to create your own script to pre-process data, train a model, create a SageMaker hosted endpoint, and make predictions against this endpoint. The model will predict what the handwritten digit is in the image presented for prediction. Besides demonstrating a "bring your own script" for TensorFlow use case, the example also showcases how easy it is to set up a cluster of multiple instances for model training in SageMaker.</p>
+<ol>
+<li>In your notebook instance, click the <strong>New</strong> button on the right and select <strong>Folder</strong>.</li>
+<li>Click the checkbox next to your new folder, click the <strong>Rename</strong> button above in the menu bar, and give the folder a name such as 'tensorflow-distributed'.</li>
+<li>Click the folder to enter it.</li>
+<li>To upload the notebook, click the <strong>Upload</strong> button on the right, then in the file selection popup, select the file 'TensorFlow_Distributed_MNIST.ipynb' from the folder on your computer where you downloaded this GitHub repository. Then click the blue <strong>Upload</strong> button that appears in the notebook next to the file name.</li>
+<li>You are now ready to begin the notebook:  click the notebook's file name to open it, then follow the directions in the notebook.</li>
+</ol>
+<p><strong>NOTE:  training the model for this example typically takes about 8 minutes.</strong></p>
+<h2>
+<a id="user-content-module-4--image-classification-notebook" class="anchor" href="#module-4--image-classification-notebook" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Module 4:  Image Classification Notebook</h2>
+<p>For this module, we'll work with an image classification example notebook. In particular, we'll use the Amazon-provided image classification algorithm, which is a supervised learning algorithm that takes an image as input and classifies it into one of multiple output categories. It uses a convolutional neural network (ResNet) that can be trained from scratch, or trained using transfer learning when a large number of training images are not available. Even if you don't have experience with neural networks or image classification, SageMaker's image classification algorithm makes the technology easy to use, with no need to design and set up your own neural network.</p>
+<p>Follow these steps:</p>
+<ol>
+<li>In your notebook instance, click the <strong>New</strong> button on the right and select <strong>Folder</strong>.</li>
+<li>Click the checkbox next to your new folder, click the <strong>Rename</strong> button above in the menu bar, and give the folder a name such as 'image-classification'.</li>
+<li>Click the folder to enter it.</li>
+<li>To upload the notebook, click the <strong>Upload</strong> button on the right, then in the file selection popup, select the file 'Image-classification-transfer-learning.ipynb' from the folder on your computer where you downloaded this GitHub repository. Then click the blue <strong>Upload</strong> button that appears in the notebook next to the file name.</li>
+<li>You are now ready to begin the notebook:  click the notebook's file name to open it, then follow the directions in the notebook.</li>
+</ol>
+<p><strong>NOTE:  training the model for this example typically takes about 10 minutes.</strong> However, keep in mind that this is relatively short because transfer learning is used rather than training from scratch, which could take many hours.</p>
+<h2>
+<a id="user-content-cleanup-guide" class="anchor" href="#cleanup-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cleanup Guide</h2>
+<p>To avoid charges for resources you no longer need when you're done with this workshop, you can delete them or, in the case of your notebook instance, stop them.  Here are the resources you should consider:</p>
+<ul>
+<li>
+<p>Endpoints:  these are the clusters of one or more instances serving inferences from your models. If you did not delete them from within the notebooks, you can delete them via the SageMaker console.  To do so, click the <strong>Endpoints</strong> link in the left panel.  Then, for each endpoint, click the radio button next to it, then select <strong>Delete</strong> from the <strong>Actions</strong> drop down menu. You can follow a similar procedure to delete the related Models and Endpoint configurations.</p>
+</li>
+<li>
+<p>Notebook instance:  you have two options if you do not want to keep the notebook instance running. If you would like to save it for later, you can stop rather than deleting it. To delete it, click the <strong>Notebook instances</strong> link in the left panel. Next, click the radio button next to the notebook instance created for this workshop, then select <strong>Delete</strong> from the <strong>Actions</strong> drop down menu. To simply stop it instead, just click the <strong>Stop</strong> link.  After it is stopped, you can start it again by clicking the <strong>Start</strong> link.  Keep in mind that if you stop rather than delete it, you will be charged for the storage associated with it.</p>
+</li>
+</ul>
+<h2>
+<a id="user-content-license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+<p>The contents of this workshop are licensed under the Apache 2.0 License.</p>
+
