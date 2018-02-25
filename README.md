@@ -2,7 +2,7 @@
 
 Amazon SageMaker is a fully-managed service that enables developers and data scientists to quickly and easily build, train, and deploy machine learning models at any scale. In this workshop, you'll create a SageMaker notebook instance and work through sample Jupyter notebooks that demonstrate some of the many features of SageMaker.  For example, you'll create model training jobs using SageMaker's hosted training feature, and create endpoints to serve predictions from your models using SageMaker's hosted endpoint feature. Along the way you'll see how machine learning can be applied to both structured data (e.g. from CSV flat files) and unstructured data (e.g. images).  
 
-![Overview](/images/overview.png)
+![Overview](./images/overview.png)
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ SageMaker is not available in all AWS Regions at this time.  Accordingly, we rec
 
 Once you've chosen a region, you should create all of the resources for this workshop there, including a new Amazon S3 bucket and a new SageMaker notebook instance. Make sure you select your region from the dropdown in the upper right corner of the AWS Console before getting started.
 
-![Region selection screenshot](/images/region-selection.png)
+![Region selection screenshot](./images/region-selection.png)
 
 ### Browser
 
@@ -70,17 +70,17 @@ Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your
 
 2. Click on Amazon SageMaker from the list of all services.  This will bring you to the Amazon SageMaker console homepage.
 
-![Services in Console](/images/Picture1.png)
+![Services in Console](./images/Picture1.png)
 
 3. To create a new notebook instance, go to **Notebook instances**, and click the **Create notebook instance** button at the top of the browser window.
 
-![Notebook Instances](/images/Picture2.png)
+![Notebook Instances](./images/Picture2.png)
 
 4. Type [First Name]-[Last Name]-workshop into the **Notebook instance name** text box, and select ml.m4.xlarge for the **Notebook instance type**.
 
 5. For IAM role, choose **Select an existing role** and choose one named "AmazonSageMaker-ExecutionRole-XXXX".
 
-![Create Notebook Instance](/images/create-instance.png)
+![Create Notebook Instance](./images/create-instance.png)
 
 6. You can expand the "Tags" section and add tags here if required.
 
@@ -90,11 +90,11 @@ Use the console or AWS CLI to create an Amazon S3 bucket. Keep in mind that your
 
 1. Wait for the server status to change to **InService**. This will take a few minutes.
 
-![Access Notebook](/images/Picture4.png)
+![Access Notebook](./images/Picture4.png)
 
 2. Click **Open**. You will now see the Jupyter homepage for your notebook instance.
 
-![Open Notebook](/images/Picture5.png)
+![Open Notebook](./images/Picture5.png)
 
 
 ## Module 2:  Video Game Sales Notebook
@@ -111,22 +111,15 @@ To begin, follow these steps:
 5. To upload the notebook, click the **Upload** button on the right, then in the file selection popup, select the file 'video-game-sales.ipynb' from the folder on your computer where you downloaded this GitHub repository. Then click the blue **Upload** button that appears in the notebook next to the file name.
 6. You are now ready to begin the notebook:  click the notebook's file name to open it.
 7. In the ```bucket = '<your_s3_bucket_name_here>'``` code line, paste the name of the S3 bucket you created in Module 1 to replace ```<your_s3_bucket_name_here>```.  The code line should now read similar to ```bucket = 'smworkshop-john-smith'```.  Do NOT paste the entire path (s3://.......), just the bucket name.  
-8. If you are familiar with Jupyter notebooks, you can skip this step.  Otherwise, please expand the instructions below.
 
-<details>
-<summary><strong>Jupyter notebook instructions (expand for details)</strong></summary><p>
 
-1. Jupyter notebooks tell a story by combining explanatory text and code. There are two types of "cells" in a notebook:  code cells, and "markdown" cells with explanatory text.  
+Jupyter notebooks tell a story by combining explanatory text and code. There are two types of "cells" in a notebook:  code cells, and "markdown" cells with explanatory text.  
+- You will be running the code cells.  These are distinguished by having "In" next to them in the left margin next to the cell, and a greyish background.  Markdown cells lack "In" and have a white background.
+- To run a code cell, simply click in it, then either click the **Run Cell** button in the notebook's toolbar, or use Control+Enter from your computer's keyboard.  
+- It may take a few seconds to a few minutes for a code cell to run.  Please run each code cell in order, and only once, to avoid repeated operations.  For example, running the same training job cell twice might create two training jobs, possibly exceeding your service limits.
+- Run through each cell in the video-game-sales notebook to complete this module
 
-1. You will be running the code cells.  These are distinguished by having "In" next to them in the left margin next to the cell, and a greyish background.  Markdown cells lack "In" and have a white background.
-
-1. To run a code cell, simply click in it, then either click the **Run Cell** button in the notebook's toolbar, or use Control+Enter from your computer's keyboard.  
-
-1. It may take a few seconds to a few minutes for a code cell to run.  Please run each code cell in order, and only once, to avoid repeated operations.  For example, running the same training job cell twice might create two training jobs, possibly exceeding your service limits.
-
-</p></details>
-
-<p><strong>NOTE:  training the model for this example typically takes about 5 minutes.</strong></p>
+<p><strong>NOTE: training the model for this example typically takes about 5 minutes.</strong></p>
 
 
 ## Module 3:  Distributed Training with TensorFlow Notebook
